@@ -39,7 +39,7 @@ const LandingPage = () => {
   </div>
 </footer> */}
 
-<footer className="absolute bottom-0 left-0 right-0 bg-white  shadow m-4 dark:bg-gray-800">
+<footer className="absolute bottom-0 left-0 right-0 bg-black  shadow m-4 dark:bg-gray-800">
   <div className="w-full mx-auto max-w-screen-xl p-4 flex flex-col items-center gap-4">
     {/* Icons with Images */}
     <div className="flex justify-center gap-12">
