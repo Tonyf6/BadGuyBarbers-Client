@@ -1,15 +1,35 @@
+// const flowbite = require("flowbite-react/tailwind");
+// /** @type {import('tailwindcss').Config} */
+// module.exports =  {
+//   content: [
+//     "./index.html",
+//     "./src/**/*.{js,ts,jsx,tsx}",
+//     flowbite.content(),
+//   ],
+//   theme: {
+//     extend: {},
+//   },
+//   plugins: [
+//     flowbite.plugin(),
+//   ],
+// };
 const flowbite = require("flowbite-react/tailwind");
+
 /** @type {import('tailwindcss').Config} */
-module.exports =  {
+module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    flowbite.content(),
+    flowbite.content(), // Flowbite content integration
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        jacques: ['Jacques Francois', 'serif'], // Add Jacques Francois font here
+      },
+    },
   },
   plugins: [
-    flowbite.plugin(),
+    flowbite.plugin(), // Flowbite plugin integration
   ],
 };
