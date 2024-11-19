@@ -2,66 +2,147 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Background color for the entire page */
+/* Base global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  @apply min-h-screen bg-gray-100 font-sans; /* Ensures consistent font and full viewport */
+}
+
+/* Utility classes for general use */
 .bg-body {
-  background-color: rgba(246, 244, 244, 1);
+  @apply bg-gray-100; /* Matches the overall light gray background */
 }
 
-/* Custom class for black background in the outer div */
 .bg-custom {
-  background-color: black;
+  @apply bg-black; /* Custom background color */
 }
 
-/* Styles for the login container */
+/* Login Page Styling */
 .login-container {
   @apply flex items-center justify-center h-screen bg-body;
 }
 
-/* Styles for the login box */
 .login-box {
   @apply bg-custom p-8 rounded-lg shadow-lg w-80;
 }
 
-/* Styles for the login title */
 .login-title {
   @apply text-white text-center text-2xl mb-6;
 }
 
-/* Styles for input labels */
 .input-label {
   @apply text-white text-sm;
 }
 
-/* Styles for input fields */
 .input-field {
   @apply px-3 py-2 rounded-full bg-gray-200 text-black focus:outline-none;
 }
 
-/* Styles for the login and create account buttons */
 .button {
   @apply px-4 py-2 rounded-full bg-gray-500 text-white hover:bg-gray-400 transition-colors duration-300;
 }
 
-/* Additional margin for the login button */
 .button-login {
   @apply mt-6;
 }
 
-/* Additional margin for the create account button */
 .button-create-account {
   @apply mt-2;
 }
 
-/* Position the logo in the top left corner */
 .logo-container {
-  position: absolute;
-  top: 20px;
-  left: 20px;
+  @apply absolute top-5 left-5; /* Positions the logo in the top-left corner */
 }
 
-/* Style for the logo image */
 .logo {
-  width: 200px; /* Adjust as needed */
-  height: auto;
+  @apply w-48 h-auto; /* Flexible logo size */
 }
 
+/* BarberSelection Page Styling */
+.barber-selection {
+  @apply min-h-screen bg-gray-100 p-8; /* Full-screen, padding, background */
+}
+
+.title {
+  @apply text-xl font-semibold text-gray-800 mb-8 text-left w-full pl-8; /* Consistent title styling */
+}
+
+.content-wrapper {
+  @apply flex gap-8 w-full max-w-7xl; /* Layout and spacing for the cards and info panel */
+}
+
+.barber-cards {
+  @apply flex gap-6; /* Aligns and spaces cards horizontally */
+}
+
+.barber-card {
+  @apply flex flex-col items-center bg-white rounded-lg p-6 cursor-pointer shadow-md w-72; /* Single card */
+  transition: all 0.2s ease-in-out;
+}
+
+.barber-card:hover {
+  @apply shadow-lg scale-105; /* Add hover effect for interactivity */
+}
+
+.barber-card.selected {
+  @apply ring-2 ring-blue-500; /* Highlight selected card */
+}
+
+.image-container {
+  @apply w-20 h-20 mb-4 bg-white rounded-lg overflow-hidden; /* Uniform image container */
+}
+
+.image-container img {
+  @apply w-full h-full object-cover; /* Image covers the container */
+}
+
+.barber-card h2 {
+  @apply text-lg font-medium text-gray-800 mb-2; /* Barber name */
+}
+
+.barber-card p {
+  @apply text-sm text-gray-500 text-center; /* Availability info */
+}
+
+/* Info Card (Right Panel) */
+.info-card {
+  @apply w-96 bg-white rounded-lg p-8 shadow-md; /* Styling for the info card */
+}
+
+.info-card h2 {
+  @apply text-2xl font-serif mb-4 text-gray-800; /* Title inside the card */
+}
+
+.info-content {
+  @apply h-64 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500; /* Placeholder content */
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1280px) {
+  .content-wrapper {
+    @apply flex-col; /* Stacks content vertically */
+  }
+
+  .barber-cards {
+    @apply flex-wrap justify-center; /* Adjust cards for smaller screens */
+  }
+
+  .info-card {
+    @apply w-full; /* Full width for info card on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .barber-card {
+    @apply w-full; /* Full width for cards */
+  }
+
+  .barber-cards {
+    @apply flex-col; /* Stack cards vertically */
+  }
+}
