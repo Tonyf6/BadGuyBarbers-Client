@@ -2,16 +2,18 @@ import LandingImage from '../assets/Photos/LandingImg.jpg';
 import Icons1 from '../assets/Photos/instagram.png';
 import Icons2 from  '../assets/Photos/facebook-2.png';
 import Icons3 from '../assets/Photos/about-us.png';
+import Navbar from '../components/NavBar';
 
 
 const LandingPage = () => {
   return (
     <>
+    <Navbar/>
    <div>
   <img
     src={LandingImage}
     className="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
-  />
+    />
   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 bg-opacity-50 p-8 rounded-lg shadow-2xl backdrop-blur-sm">
     <h1 className="font-jacques text-4xl font-bold text-black mb-4">
       Welcome To Bad Guy Barbers
@@ -26,6 +28,7 @@ const LandingPage = () => {
     </div>
   </div>
 </div>
+ 
 
 
 

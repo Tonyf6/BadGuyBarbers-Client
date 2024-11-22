@@ -1,9 +1,9 @@
-
+import Navbar from '../components/NavBar';
 
 const AboutUs = () => {
   return (
     <>
-    
+    <Navbar/>
     <div className="bg-white-200">
        
 
