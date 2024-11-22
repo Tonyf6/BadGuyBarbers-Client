@@ -88,8 +88,8 @@ const ChooseTimePage = () => {
               <p className="text-sm text-gray-600">Content 12</p>
             </button>
           </div>
-          {/* Calendar Section */}
-          <div className="bg-white rounded-lg shadow-md p-4">
+          
+          <div className="bg-white rounded-lg shadow-md p-4 ">
             <Datepicker inline />
           </div>
         </div>
