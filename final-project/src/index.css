@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+
 @tailwind utilities;
 
 /* Base global styles */
@@ -294,3 +295,4 @@ body {
   @apply w-full bg-black text-white py-3 rounded-lg
          hover:bg-gray-900 transition-colors duration-200;
 }
+
