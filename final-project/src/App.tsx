@@ -16,8 +16,8 @@ const App = () => {
   return (
 
     <>
-       {/* <LandingPage/>  */}
-       <ChooseServicePage/>
+       <LandingPage/> 
+       {/* <ChooseServicePage/> */}
        {/* <NavBar/> */}
        {/* <AboutUs/> */}
       <Router>
