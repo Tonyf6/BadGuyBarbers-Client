@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Check, X } from 'lucide-react';
 import placeholder from '../assets/man silhouette.jpg';
-import { Check } from 'lucide-react';
 
 interface Service {
   name: string;
@@ -8,11 +8,12 @@ interface Service {
   price: number;
 }
 
-const BarberServices = () => {
+const BarberServices: React.FC = () => {
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [primaryService, setPrimaryService] = useState<Service | null>(null);
+  const [isHovering, setIsHovering] = useState(false);
 
-  const services = [
+  const services: Service[] = [
     {
       name: 'Haircut',
       duration: '45 mins',
@@ -45,45 +46,77 @@ const BarberServices = () => {
     }
   ];
 
-  const handleServiceSelection = (service: Service) => {
+  const handleServiceSelection = (service: Service): void => {
     if (!primaryService) {
+      // Initial selection
       setPrimaryService(service);
       setSelectedServices([service]);
     } else {
+      // Check if clicking primary service
+      if (service.name === primaryService.name) {
+        // Reset everything if primary service is unselected
+        setPrimaryService(null);
+        setSelectedServices([]);
+        return;
+      }
+      
+      // Handle additional services
       if (selectedServices.find(s => s.name === service.name)) {
+        // Remove additional service
         setSelectedServices(selectedServices.filter(s => s.name !== service.name));
       } else {
+        // Add additional service
         setSelectedServices([...selectedServices, service]);
       }
     }
   };
 
-  const calculateTotal = () => {
+  const calculateTotal = (): number => {
     return selectedServices.reduce((total, service) => total + service.price, 0);
   };
 
+  const handlePrimaryServiceUnselect = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPrimaryService(null);
+    setSelectedServices([]);
+  };
+
+  const renderCheckmark = () => (
+    <div 
+      className="check-mark hoverable"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      onClick={handlePrimaryServiceUnselect}
+    >
+      {isHovering ? (
+        <X className="h-4 w-4" />
+      ) : (
+        <Check className="h-4 w-4" />
+      )}
+    </div>
+  );
+
   return (
     <div className="barber-selection">
-      <h1 className="title">Choose a service</h1>
+      <h1 className={`title ${primaryService ? 'text-gray-400' : 'text-gray-900'}`}>
+        Choose a service
+      </h1>
 
       <div className="content-wrapper">
         <div className="flex-1">
           {/* Primary Service Section */}
           {primaryService && (
-            <div className="mb-8">
-              <div className={`
-                service-card bg-black text-white relative
-                ${selectedServices.includes(primaryService) ? 'selected' : ''}
-              `}>
-                <div className="service-details">
-                  <h2>{primaryService.name}</h2>
-                  <p className="text-gray-400">{primaryService.duration}</p>
-                </div>
-                <div className="service-price text-white">
-                  ${primaryService.price}
-                </div>
-                <div className="absolute top-4 right-4">
-                  <Check className="w-6 h-6 text-white" />
+            <div>
+              <div className="service-cards">
+                <div className="service-card bg-black">
+                  {renderCheckmark()}
+                  <div className="service-details">
+                    <h2>{primaryService.name}</h2>
+                    <p>{primaryService.duration}</p>
+                  </div>
+                  <div className="service-price">
+                    ${primaryService.price}
+                  </div>
                 </div>
               </div>
             </div>
@@ -92,7 +125,7 @@ const BarberServices = () => {
           {/* Additional Services Section */}
           {primaryService && (
             <div>
-              <h2 className="text-xl font-semibold mb-6">Anything you wish to add?</h2>
+              <h2 className="text-xl font-semibold mb-6 mt-8">Anything you wish to add?</h2>
               <div className="service-cards">
                 {services
                   .filter(service => service.name !== primaryService.name)
@@ -102,25 +135,15 @@ const BarberServices = () => {
                       <div
                         key={index}
                         onClick={() => handleServiceSelection(service)}
-                        className={`
-                          service-card
-                          ${isSelected ? 'bg-black text-white' : 'bg-white'}
-                        `}
+                        className={`service-card ${isSelected ? 'bg-black' : ''}`}
                       >
                         <div className="service-details">
                           <h2>{service.name}</h2>
-                          <p className={isSelected ? 'text-gray-400' : 'text-gray-500'}>
-                            {service.duration}
-                          </p>
+                          <p>{service.duration}</p>
                         </div>
-                        <div className={`service-price ${isSelected ? 'text-white' : ''}`}>
+                        <div className="service-price">
                           ${service.price}
                         </div>
-                        {isSelected && (
-                          <div className="absolute top-4 right-4">
-                            <Check className="w-6 h-6 text-white" />
-                          </div>
-                        )}
                       </div>
                     );
                   })}
@@ -159,7 +182,7 @@ const BarberServices = () => {
             <img
               src={placeholder}
               alt="Barber profile"
-              className="w-8 h-8 rounded-sm"
+              className="w-8 h-8 rounded-sm object-cover"
             />
             <span className="text-gray-900">Tony F.</span>
           </div>
@@ -187,7 +210,7 @@ const BarberServices = () => {
                 </div>
               </div>
 
-              <button className="w-full bg-black text-white py-3 rounded-lg mt-4">
+              <button className="choose-time-button">
                 Choose a time
               </button>
             </div>
