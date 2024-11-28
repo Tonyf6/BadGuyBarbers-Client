@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -90,12 +91,22 @@ body {
   @apply shadow-lg scale-105;
 }
 
-.barber-card.selected {
-  @apply ring-2 ring-blue-500;
+.barber-card.bg-black {
+  background-color: black;
+}
+
+.barber-card.bg-black h2,
+.barber-card.bg-black p {
+  @apply text-white;
+}
+
+.barber-card.bg-black .image-container {
+  @apply border-2 border-white;
 }
 
 .image-container {
   @apply w-20 h-20 mb-4 bg-white rounded-lg overflow-hidden;
+  transition: all 0.2s ease-in-out;
 }
 
 .image-container img {
@@ -104,10 +115,12 @@ body {
 
 .barber-card h2 {
   @apply text-lg font-medium text-gray-800 mb-2;
+  transition: color 0.2s ease-in-out;
 }
 
 .barber-card p {
   @apply text-sm text-gray-500 text-center;
+  transition: color 0.2s ease-in-out;
 }
 
 /* Service Selection Styles */
@@ -159,11 +172,10 @@ body {
 }
 
 /* Checkmark Styling */
-
-  .check-mark {
-    @apply absolute top-3 right-3 bg-black rounded-full border-2 border-white 
-           flex items-center justify-center p-1;
-    z-index: 10;
+.check-mark {
+  @apply absolute top-3 right-3 bg-black rounded-full border-2 border-white 
+         flex items-center justify-center p-1;
+  z-index: 10;
   transition: all 0.2s ease-in-out;
 }
 
@@ -271,4 +283,134 @@ body {
   .title {
     @apply pl-0;
   }
+}
+
+/* Page Transition Animations */
+.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Enhanced Card Transitions */
+.barber-card {
+  @apply flex flex-col items-center bg-white rounded-lg p-6 cursor-pointer shadow-md w-72;
+  transition: all 0.3s ease-in-out, background-color 0.3s ease;
+}
+
+.service-card {
+  @apply bg-white rounded-lg p-6 cursor-pointer shadow-md relative;
+  transition: all 0.3s ease-in-out, background-color 0.3s ease;
+  height: 160px;
+}
+
+/* Update transition properties for text elements */
+.barber-card h2,
+.barber-card p,
+.service-card h2,
+.service-card p {
+  transition: color 0.3s ease;
+}
+
+.image-container {
+  transition: border 0.3s ease, transform 0.3s ease;
+}
+
+/* Updated hover states */
+.barber-card:hover,
+.service-card:hover {
+  @apply shadow-lg;
+  transform: scale(1.05);
+}
+
+/* Prevent hover scaling on selected cards */
+.barber-card.bg-black:hover,
+.service-card.bg-black:hover {
+  transform: none;
+}
+
+/* App container style */
+.app-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Enhanced checkmark transitions */
+.check-mark {
+  @apply absolute -top-3 -right-3 h-7 w-7 bg-black rounded-full border-2 border-white 
+         flex items-center justify-center;
+  z-index: 10;
+  transition: all 0.3s ease-in-out;
+}
+
+.check-mark.hoverable {
+  @apply cursor-pointer;
+}
+
+.check-mark.hoverable:hover {
+  @apply bg-red-600;
+  transform: scale(1.1);
+}
+
+.check-mark > svg {
+  @apply h-4 w-4 text-white;
+  transition: transform 0.3s ease;
+}
+
+/* Add these skeleton animations to your existing CSS */
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.animate-pulse {
+  background: linear-gradient(
+    to right,
+    #f6f7f8 8%,
+    #edeef1 18%,
+    #f6f7f8 33%
+  );
+  background-size: 800px 104px;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* Optional: Add a base loading state class */
+.loading-state {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add to your existing CSS */
+.breadcrumb-container {
+  @apply flex items-center gap-2 text-sm mb-8;
+}
+
+.breadcrumb-item {
+  @apply transition-colors duration-200;
+}
+
+.breadcrumb-item.clickable {
+  @apply cursor-pointer hover:text-gray-600;
+}
+
+.breadcrumb-item.active {
+  @apply text-gray-900;
+}
+
+.breadcrumb-separator {
+  @apply text-gray-400;
 }
