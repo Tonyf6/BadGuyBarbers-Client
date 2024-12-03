@@ -12,51 +12,59 @@ const Breadcrumb: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Check if we have the required data for each step
+  const hasBarber = Boolean(location.state?.barber);
+
   const getBreadcrumbs = (): BreadcrumbItem[] => {
-    const items: BreadcrumbItem[] = [
+    const currentPath = location.pathname;
+
+    return [
       {
         label: 'Professional',
         path: '/barberselection',
-        isActive: location.pathname === '/barberselection',
+        isActive: currentPath === '/barberselection',
         isClickable: true
       },
       {
         label: 'Service',
         path: '/barberservices',
-        isActive: location.pathname === '/barberservices',
-        isClickable: location.pathname === '/barberservices' || location.state?.barber
+        isActive: currentPath === '/barberservices',
+        isClickable: hasBarber || currentPath === '/barberservices'
       },
       {
         label: 'Time',
         path: '/time',
-        isActive: false,
+        isActive: currentPath === '/time',
         isClickable: false
       },
       {
         label: 'Done',
         path: '/done',
-        isActive: false,
+        isActive: currentPath === '/done',
         isClickable: false
       }
     ];
-
-    return items;
   };
 
   const handleClick = (item: BreadcrumbItem) => {
+    // Only navigate if the item is clickable
     if (item.isClickable) {
-      navigate(item.path, { state: location.state });
+      // Preserve the state when navigating
+      navigate(item.path, { 
+        state: location.state 
+      });
     }
   };
 
   return (
-    <div className="flex items-center gap-2 text-sm mb-8">
+    <nav className="flex items-center gap-2 text-sm mb-8">
       {getBreadcrumbs().map((item, index) => (
         <React.Fragment key={item.label}>
           <span
             className={`
-              ${item.isClickable ? 'cursor-pointer hover:text-gray-600' : 'cursor-default'}
+              ${item.isClickable ? 'cursor-pointer hover:text-gray-600' : 'cursor-not-allowed'}
               ${item.isActive ? 'text-gray-900' : 'text-gray-400'}
+              transition-colors duration-200
             `}
             onClick={() => handleClick(item)}
           >
@@ -67,7 +75,7 @@ const Breadcrumb: React.FC = () => {
           )}
         </React.Fragment>
       ))}
-    </div>
+    </nav>
   );
 };
 
