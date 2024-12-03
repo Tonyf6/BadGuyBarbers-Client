@@ -5,12 +5,13 @@ import Login from './components/login';
 import CreateAccount from './components/createaccount';
 import BarberSelection from './components/barberselection';
 import BarberServices from './components/barberservices';
-import { Navbar } from 'flowbite-react'
-import './App.css'
-import LandingPage from './components/LandingPage'
-import NavBar from './components/NavBar'
-import AboutUs from './components/AboutUs'
-import ChooseServicePage from './components/ChooseTimePage'
+import { Navbar } from 'flowbite-react';
+import './App.css';
+import LandingPage from './components/LandingPage';
+import NavBar from './components/NavBar';
+import AboutUs from './components/AboutUs';
+import ChooseServicePage from './components/ChooseTimePage';
+import ChooseTimePage from './components/ChooseTimePage';
 
 
 const AnimatedRoutes = () => {
@@ -24,8 +25,8 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
       <Route path="/home" element={<LandingPage />} />
       <Route path="/aboutus" element={<AboutUs />} />
-      <Route path="/time" element={<ChooseServicePage />} />
-       
+      <Route path="/time" element={<ChooseServicePage />} /> 
+      {/* <ChooseTimePage/> */}
         <Route path="/login" element={<Login />} />
         <Route path="/createaccount" element={<CreateAccount />} />
         <Route path="/barberselection" element={<BarberSelection />} />
