@@ -1,6 +1,7 @@
 
 @tailwind base;
 @tailwind components;
+
 @tailwind utilities;
 
 /* Base global styles */
@@ -377,6 +378,7 @@ body {
   }
 }
 
+
 .animate-pulse {
   background: linear-gradient(
     to right,
@@ -414,3 +416,4 @@ body {
 .breadcrumb-separator {
   @apply text-gray-400;
 }
+
