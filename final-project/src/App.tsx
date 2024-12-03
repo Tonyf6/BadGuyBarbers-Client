@@ -18,11 +18,14 @@ const AnimatedRoutes = () => {
   
   return (
     <AnimatePresence mode="wait">
+      <div>
+      <NavBar/>
+      </div>
       <Routes location={location} key={location.pathname}>
-       <LandingPage/> 
-       {/* <ChooseServicePage/> */}
-       {/* <NavBar/> */}
-       {/* <AboutUs/> */}
+      <Route path="/home" element={<LandingPage />} />
+      <Route path="/aboutus" element={<AboutUs />} />
+      <Route path="/time" element={<ChooseServicePage />} />
+       
         <Route path="/login" element={<Login />} />
         <Route path="/createaccount" element={<CreateAccount />} />
         <Route path="/barberselection" element={<BarberSelection />} />
@@ -37,10 +40,7 @@ const App = () => {
     <Router>
       <AnimatedRoutes />
     </Router>
-    </>
-  )
+  );
 };
 
-
 export default App;
-
