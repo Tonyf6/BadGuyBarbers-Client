@@ -133,7 +133,7 @@ const ChooseTimePage = () => {
                 </button>
               ))}
             </div>
-            <div className="bg-white rounded-lg shadow-md p-4">
+            <div className=" rounded-lg p-4">
               <Datepicker
                 inline
                 onChange={(date) => setSelectedDate(date as Date)}
@@ -169,7 +169,7 @@ const ChooseTimePage = () => {
               <button
                 className={`mt-4 text-white rounded-lg py-2 px-6 ${
                   selectedDate && selectedSlot 
-                    ? "bg-blue-500 hover:bg-blue-600" 
+                    ? "bg-black hover:bg-black" 
                     : "bg-gray-400 cursor-not-allowed"
                 }`}
                 onClick={submitBooking}
@@ -209,7 +209,7 @@ const ChooseTimePage = () => {
               </button>
             ))}
           </div>
-          <div className="info-card bg-white rounded-lg shadow-md p-4 mt-4 w-full max-w-md mx-auto">
+          <div className="info-card max-sm:hidden bg-white rounded-lg shadow-md p-4 mt-4 w-full max-w-md mx-auto">
             <h2 className="text-xl font-bold mb-4">Bad Guy Barbers</h2>
             <div className="info-content">
               {selectedDate && (
@@ -239,7 +239,7 @@ const ChooseTimePage = () => {
             <button
               className={`mt-4 text-white rounded-lg py-2 px-6 ${
                 selectedDate && selectedSlot 
-                  ? "bg-blue-500 hover:bg-blue-600" 
+                  ? "bg-black hover:bg-black" 
                   : "bg-gray-400 cursor-not-allowed"
               }`}
               onClick={submitBooking}
