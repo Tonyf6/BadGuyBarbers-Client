@@ -5,6 +5,8 @@ import AnimatedPage from './AnimatedPage';
 import placeholder from '../assets/man silhouette.jpg';
 import Breadcrumb from './Breadcrumb';
 import Skeleton, { BarberCardSkeleton } from './Skeleton';
+import NavBar from "./NavBar";
+
 
 interface Barber {
   name: string;
@@ -55,6 +57,7 @@ const BarberSelection: React.FC = () => {
 
   return (
     <AnimatedPage>
+      <NavBar />
       <div className={`barber-selection ${isNavigating ? 'fade-out' : ''}`}>
         <Breadcrumb />
         <h1 className="title">Choose a professional</h1>

@@ -417,3 +417,15 @@ body {
   @apply text-gray-400;
 }
 
+/* About Us Page Styles */
+.about-us-card {
+  @apply bg-white rounded-2xl shadow-sm p-16 max-w-4xl mx-auto;
+}
+
+.about-us-title {
+  @apply text-4xl font-serif text-center mb-12;
+}
+
+.about-us-text {
+  @apply text-xl leading-relaxed font-serif text-gray-800;
+}

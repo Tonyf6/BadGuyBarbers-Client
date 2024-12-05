@@ -10,7 +10,6 @@ import './App.css';
 import LandingPage from './components/LandingPage';
 import NavBar from './components/NavBar';
 import AboutUs from './components/AboutUs';
-import ChooseServicePage from './components/ChooseTimePage';
 import ChooseTimePage from './components/ChooseTimePage';
 
 
@@ -25,8 +24,7 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
       <Route path="/home" element={<LandingPage />} />
       <Route path="/aboutus" element={<AboutUs />} />
-      <Route path="/time" element={<ChooseServicePage />} /> 
-      {/* <ChooseTimePage/> */}
+      <Route path="/time" element={<ChooseTimePage />} /> 
         <Route path="/login" element={<Login />} />
         <Route path="/createaccount" element={<CreateAccount />} />
         <Route path="/barberselection" element={<BarberSelection />} />
