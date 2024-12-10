@@ -4,6 +4,7 @@ import Login from './components/login';
 import CreateAccount from './components/createaccount';
 import BarberSelection from './components/barberselection';
 import BarberServices from './components/barberservices';
+import Throwaway from './components/Throwaway';
 import { Navbar } from 'flowbite-react';
 import './App.css';
 import LandingPage from './components/LandingPage';
@@ -19,9 +20,13 @@ const App = () => {
     <>
        {/* <LandingPage/>  */}
        <ChooseTimePage/>
+       {/* <Throwaway/> */}
        {/* <ChooseServicePage/> */}
        {/* <NavBar/> */}
        {/* <AboutUs/> */}
+       {/* <BarberSelection/> */}
+       {/* <BarberServices/> */}
+
       <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
