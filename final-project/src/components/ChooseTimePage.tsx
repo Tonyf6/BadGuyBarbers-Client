@@ -3,7 +3,7 @@ import axios from "axios";
 import NavBar from "./NavBar";
 import { Datepicker } from "flowbite-react";
 import { CreditCard, DollarSign } from "lucide-react";
-import tagimg from '../assets/man silhouette.jpg';
+import tagimg from "../assets/man silhouette.jpg";
 // Mock API for bookings
 const mockBookingApi = {
   async post(url: string, data: any) {
@@ -150,7 +150,9 @@ const ChooseTimePage = () => {
             </div>
           </div>
           <div className="info-card bg-white rounded-lg shadow p-4 right-0 ml-auto mr-20 absolute top-28">
-            <h2 className="text-xl font-bold mb-4 font-jacques">Bad Guy Barbers</h2>
+            <h2 className="text-xl font-bold mb-4 font-jacques">
+              Bad Guy Barbers
+            </h2>
             <div className="info-content">
               {selectedDate && (
                 <p>
@@ -176,12 +178,11 @@ const ChooseTimePage = () => {
                 <p className="text-gray-500">No time slot selected</p>
               )}
 
-
-<div className="flex flex-col space-y-2 p-4 max-w-xs">
-              <div className="flex items-center space-x-3">
-                <button
-                  onClick={() => setSelectedMethod("card")}
-                  className={`
+              <div className="flex flex-col space-y-2 p-4 max-w-xs">
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => setSelectedMethod("card")}
+                    className={`
             flex items-center justify-center 
             w-12 h-8 
             border-2 rounded-lg 
@@ -192,21 +193,21 @@ const ChooseTimePage = () => {
                 : "border-gray-300 hover:border-gray-500"
             }
           `}
-                >
-                  <CreditCard
-                    className={`
+                  >
+                    <CreditCard
+                      className={`
               w-4 h-4 
               ${selectedMethod === "card" ? "text-blue-600" : "text-gray-400"}
             `}
-                  />
-                </button>
-                <p className="text-sm text-gray-700">Card</p>
-              </div>
+                    />
+                  </button>
+                  <p className="text-sm text-gray-700">Card</p>
+                </div>
 
-              <div className="flex items-center space-x-3">
-                <button
-                  onClick={() => setSelectedMethod("cash")}
-                  className={`
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => setSelectedMethod("cash")}
+                    className={`
             flex items-center justify-center 
             w-12 h-8 
             border-2 rounded-lg 
@@ -217,18 +218,17 @@ const ChooseTimePage = () => {
                 : "border-gray-300 hover:border-gray-500"
             }
           `}
-                >
-                  <DollarSign
-                    className={`
+                  >
+                    <DollarSign
+                      className={`
               w-4 h-4 
               ${selectedMethod === "cash" ? "text-blue-600" : "text-gray-400"}
             `}
-                  />
-                </button>
-                <p className="text-sm text-gray-700">Cash</p>
+                    />
+                  </button>
+                  <p className="text-sm text-gray-700">Cash</p>
+                </div>
               </div>
-            </div>
-
             </div>
             <button
               className={`mt-4 text-white rounded-lg py-2 px-6 ${
@@ -244,7 +244,6 @@ const ChooseTimePage = () => {
             {bookingSuccess && (
               <p className="text-green-500 mt-2">Booking successful!</p>
             )}
-           
           </div>
           {/* </div> */}
         </div>
@@ -261,82 +260,101 @@ const ChooseTimePage = () => {
 
           {/* Time Slots */}
           <div className="lg:hidden min-h-screen flex flex-col items-center p-4 pt-20">
-      {/* Datepicker */}
-      <div className="w-full max-w-md mb-4 mx-auto flex justify-center">
-        <Datepicker inline />
-      </div>
+            {/* Datepicker */}
+            <div className="w-full max-w-md mb-4 mx-auto flex justify-center">
+              <Datepicker inline />
+            </div>
 
-      {/* Time Slots */}
-      <div className="grid grid-cols-3 gap-3 w-full max-w-md mx-auto justify-center items-center">
-        {/* Replace `timeSlots` with actual slot data */}
-        {timeSlots.map((slot) => (
-          <button
-            key={slot.id}
-            className={`text-center rounded-lg shadow-md p-2 hover:shadow-lg transition-all
+            {/* Time Slots */}
+            <div className="grid grid-cols-3 gap-3 w-full max-w-md mx-auto justify-center items-center">
+              {/* Replace `timeSlots` with actual slot data */}
+              {timeSlots.map((slot) => (
+                <button
+                  key={slot.id}
+                  className={`text-center rounded-lg shadow-md p-2 hover:shadow-lg transition-all
               ${
                 !slot.available
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-gray-100"
               }`}
-          >
-            <h3 className="font-semibold text-sm">{slot.time}</h3>
-          </button>
-        ))}
-      </div>
+                >
+                  <h3 className="font-semibold text-sm">{slot.time}</h3>
+                </button>
+              ))}
+            </div>
 
-      <div className="pt-4 border-t border-gray-200">
-        <div className="flex justify-between items-center">
-          <p></p>
-          <span className="font-medium">$</span>
+            <div className="pt-4 border-t border-gray-200">
+              <div className="flex justify-between items-center">
+                <p></p>
+                <span className="font-medium">$</span>
+              </div>
+            </div>
+
+            {/* "Book Time" Button */}
+            <button
+              className="w-full bg-black text-white py-3 rounded-lg mt-4"
+              onClick={() => setShowPopup(true)} // Show pop-up
+            >
+              Book Time
+            </button>
+
+            {showPopup && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-black w-11/12 max-w-sm p-6 rounded-lg relative h-3/4 overflow-y-auto">
+                  {/* Close Button */}
+                  <button
+                    className="absolute top-2 right-2 text-gray-600 hover:text-black"
+                    onClick={() => setShowPopup(false)} // Close pop-up
+                  >
+                    ✖
+                  </button>
+                  <h2 className="text-xl font-semibold mb-4 text-white">
+                    Your Order
+                  </h2>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4">
+                      <img
+                        src={tagimg}
+                        alt="Person Icon"
+                        className="w-8 h-8 rounded-full"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <p className="text-white">Something</p>
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <p className="text-white">Order Here</p>
+                    <p className="text-white">Date and Time</p>
+                  </div>
+                  <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-4">
+                    <CreditCard
+                      className={`
+      w-6 h-6
+      ${selectedMethod === "card" ? "text-blue-600" : "text-gray-400"}
+    `}
+                    />
+                    <DollarSign
+                      className={`
+      w-6 h-6
+      ${selectedMethod === "cash" ? "text-blue-600" : "text-gray-400"}
+    `}
+                    />
+                  </div>
+                  <button
+                    className="absolute bottom-0 left-0 w-full bg-white text-black py-2"
+                    onClick={() => setShowPopup(false)}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* "Book Time" Button */}
-      <button
-        className="w-full bg-black text-white py-3 rounded-lg mt-4"
-        onClick={() => setShowPopup(true)} // Show pop-up
-      >
-        Book Time
-      </button>
-
-      {/* Pop-Up */}
-      {showPopup && (
- <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-black w-11/12 max-w-sm p-6 rounded-lg relative h-3/4 overflow-y-auto">
-        {/* Close Button */}
-        <button
-            className="absolute top-2 right-2 text-gray-600 hover:text-black"
-            onClick={() => setShowPopup(false)} // Close pop-up
-        >
-            ✖
-        </button>
-        <h2 className="text-xl font-semibold mb-4 text-white">Your Order</h2>
-        <div className="grid grid-cols-2 gap-4">
-            <div className="p-4">
-            <img src={tagimg} alt="Person Icon" className="w-8 h-8 rounded-full" />
-            </div>
-            <div className="p-4">
-                <p className="text-white">Something</p>
-            </div>
-        </div>
-        <div className="mb-4">
-            <p className="text-white">Order Here</p>
-            <p className="text-white">Date and Time</p>
-        </div>
-        <button 
-            className="absolute bottom-0 left-0 w-full bg-white text-black py-2" 
-            onClick={() => setShowPopup(false)}
-        > 
-            Confirm
-        </button>
+      //{" "}
     </div>
- </div>
-)}
-    </div>
-       
-    </div>
-            </div>
-    // </div>
   );
 };
 
