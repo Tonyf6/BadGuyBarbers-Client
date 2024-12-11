@@ -1,44 +1,95 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import AnimatedPage from './AnimatedPage';
+import { LoginFormSkeleton } from './Skeleton';
 import logo from '../assets/Bad Guy Barbers Logo.png';
 
 const CreateAccount = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const logoAnimation = {
+    initial: { opacity: 0, y: -20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 }
+  };
+
+  if (isLoading) {
+    return (
+      <AnimatedPage>
+        <div className="login-container">
+          <motion.div className="logo-container" {...logoAnimation}>
+            <img src={logo} alt="Bad Guy Barbers" className="logo" />
+          </motion.div>
+          <LoginFormSkeleton />
+        </div>
+      </AnimatedPage>
+    );
+  }
+
   return (
-    <div className="login-container">
-      {/* Logo section */}
-      <div className="logo-container">
-        <img src={logo} alt="Bad Guy Barbers" className="logo" />
+    <AnimatedPage>
+      <div className="login-container">
+        <motion.div className="logo-container" {...logoAnimation}>
+          <img src={logo} alt="Bad Guy Barbers" className="logo" />
+        </motion.div>
+
+        <motion.div
+          className="login-box"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <h2 className="login-title">Create Account</h2>
+          <form className="flex flex-col gap-6">
+            <motion.div 
+              className="flex flex-col gap-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+            >
+              <label className="input-label">Username</label>
+              <input
+                type="text"
+                className="input-field"
+                placeholder="Enter username"
+              />
+            </motion.div>
+
+            <motion.div 
+              className="flex flex-col gap-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+            >
+              <label className="input-label">Password</label>
+              <input
+                type="password"
+                className="input-field"
+                placeholder="Enter password"
+              />
+            </motion.div>
+
+            <motion.div 
+              className="flex flex-col gap-3 mt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.5 }}
+            >
+              <button type="submit" className="button button-login">
+                Create Account
+              </button>
+            </motion.div>
+          </form>
+        </motion.div>
       </div>
-
-      {/* Create Account box */}
-      <div className="login-box">
-        <h2 className="login-title">Create Account</h2>
-        <form className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <label className="input-label">Username</label>
-            <input
-              type="text"
-              className="input-field"
-              placeholder="Enter username"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="input-label">Password</label>
-            <input
-              type="password"
-              className="input-field"
-              placeholder="Enter password"
-            />
-          </div>
-
-          <div className="flex flex-col gap-3 mt-4">
-            <button type="submit" className="button button-login">
-              Create Account
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    </AnimatedPage>
   );
 };
 

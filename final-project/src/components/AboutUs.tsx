@@ -3,7 +3,8 @@ import Navbar from '../components/NavBar';
 const AboutUs = () => {
   return (
     <>
-    <Navbar/>
+    
+    {/* <Navbar/> */}
     <div className="bg-white-200">
        
 
