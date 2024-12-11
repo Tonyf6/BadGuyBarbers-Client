@@ -417,3 +417,46 @@ body {
   @apply text-gray-400;
 }
 
+/* About Us Page Styles */
+.about-us-card {
+  @apply bg-white rounded-2xl shadow-sm p-16 max-w-4xl mx-auto;
+}
+
+.about-us-title {
+  @apply text-4xl font-serif text-center mb-12;
+}
+
+.about-us-text {
+  @apply text-xl leading-relaxed font-serif text-gray-800;
+}
+
+/* Breadcrumb Styles */
+.breadcrumb-nav {
+  @apply flex items-center gap-2 text-sm mb-8;
+}
+
+.breadcrumb-item {
+  @apply transition-colors duration-200 font-medium;
+}
+
+.breadcrumb-item-clickable {
+  @apply cursor-pointer hover:text-gray-600 relative;
+}
+
+.breadcrumb-item-clickable:after {
+  content: '';
+  @apply absolute left-0 right-0 bottom-0 h-0.5 bg-gray-600 scale-x-0 transition-transform duration-200;
+  transform-origin: center;
+}
+
+.breadcrumb-item-clickable:hover:after {
+  @apply scale-x-100;
+}
+
+.breadcrumb-item-active {
+  @apply text-gray-900;
+}
+
+.breadcrumb-item-disabled {
+  @apply text-gray-400 cursor-not-allowed opacity-50;
+}
