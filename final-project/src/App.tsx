@@ -5,6 +5,7 @@ import Login from './components/login';
 import CreateAccount from './components/createaccount';
 import BarberSelection from './components/barberselection';
 import BarberServices from './components/barberservices';
+import Throwaway from './components/Throwaway';
 import { Navbar } from 'flowbite-react';
 import './App.css';
 import LandingPage from './components/LandingPage';
@@ -17,6 +18,7 @@ const AnimatedRoutes = () => {
   const location = useLocation();
   
   return (
+
     <AnimatePresence mode="wait">
       <div>
       <NavBar/>
