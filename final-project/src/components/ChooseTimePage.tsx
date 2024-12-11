@@ -142,7 +142,7 @@ const ChooseTimePage = () => {
               ))}
             </div>
             {/* This div above is marked  */}
-            <div className=" rounded-lg p-4">
+            <div className=" rounded-lg p-4 pl-20">
               <Datepicker
                 inline
                 onChange={(date) => setSelectedDate(date as Date)}
@@ -249,18 +249,12 @@ const ChooseTimePage = () => {
         </div>
 
         {/* Mobile Layout */}
-        <div className="lg:hidden min-h-screen flex flex-col items-center p-4 pt-20 pl-20 ">
-          {/* Datepicker */}
-          {/* <div className="w-full max-w-md mb-4 mx-auto flex justify-center">
-            <Datepicker
-              inline
-              onChange={(date) => setSelectedDate(date as Date)}
-            />
-          </div> */}
+        <div className="lg:hidden min-h-screen flex flex-col items-center p-4 pt-20 pl-10 ">
+        
 
           {/* Time Slots */}
-          <div className="lg:hidden min-h-screen flex flex-col items-center p-4 pt-20">
-            {/* Datepicker */}
+          <div className="lg:hidden min-h-screen flex flex-col items-center p-4 pt-20 ">
+           
             <div className="w-full max-w-md mb-4 mx-auto flex justify-center">
               <Datepicker inline />
             </div>
