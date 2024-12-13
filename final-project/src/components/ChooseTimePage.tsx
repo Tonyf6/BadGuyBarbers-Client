@@ -64,7 +64,7 @@ const ChooseTimePage = () => {
       slots.push({
         id: id,
         time: timeString,
-        available: !unavailableSlots.has(id),
+        available: true,
         duration: 30,
       });
 
@@ -149,7 +149,7 @@ const ChooseTimePage = () => {
               />
             </div>
           </div>
-          <div className="info-card bg-white rounded-lg shadow p-4 right-0 ml-auto mr-20 absolute top-28">
+          <div className="info-card bg-white rounded-lg shadow p-4 right-0 ml-auto mr-20 absolute top-28 pt-15">
             <h2 className="text-xl font-bold mb-4 font-jacques">
               Bad Guy Barbers
             </h2>

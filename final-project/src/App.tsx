@@ -20,22 +20,23 @@ const AnimatedRoutes = () => {
   
   return (
 
-    <AnimatePresence mode="wait">
-      <div>
-      <NavBar/>
-      </div>
-      <Routes location={location} key={location.pathname}>
-      <Route path="/home" element={<LandingPage />} />
-      <Route path="/aboutus" element={<AboutUs />} />
-      <Route path="/time" element={<ChooseServicePage />} /> 
-      {/* <ChooseTimePage/> */}
+    // <AnimatePresence mode="wait">
+    //   <div>
+    //   <NavBar/>
+    //   </div>
+    //   <Routes location={location} key={location.pathname}>
+    //   <Route path="/home" element={<LandingPage />} />
+    //   <Route path="/aboutus" element={<AboutUs />} />
+    //   <Route path="/time" element={<ChooseServicePage />} /> 
+    //   {/* <ChooseTimePage/> */}
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/createaccount" element={<CreateAccount />} />
-        <Route path="/barberselection" element={<BarberSelection />} />
-        <Route path="/barberservices" element={<BarberServices/>} />
-      </Routes>
-    </AnimatePresence>
+    //     <Route path="/login" element={<Login />} />
+    //     <Route path="/createaccount" element={<CreateAccount />} />
+    //     <Route path="/barberselection" element={<BarberSelection />} />
+    //     <Route path="/barberservices" element={<BarberServices/>} />
+    //   </Routes>
+    // </AnimatePresence>
+    <ChooseTimePage/>
   );
 };
 
