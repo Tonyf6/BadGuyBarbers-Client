@@ -390,7 +390,7 @@ body {
   animation: shimmer 1.5s infinite linear;
 }
 
-/* Optional: Add a base loading state class */
+/*Add a base loading state class */
 .loading-state {
   position: relative;
   overflow: hidden;
@@ -460,3 +460,4 @@ body {
 .breadcrumb-item-disabled {
   @apply text-gray-400 cursor-not-allowed opacity-50;
 }
+

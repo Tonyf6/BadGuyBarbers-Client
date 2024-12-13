@@ -1,26 +1,16 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from "./NavBar";
+import Breadcrumb from "./Breadcrumb";
+import AnimatedPage from "./AnimatedPage";
 import { Datepicker } from "flowbite-react";
 import { CreditCard, DollarSign } from "lucide-react";
-import tagimg from "../assets/man silhouette.jpg";
-// Mock API for bookings
-const mockBookingApi = {
-  async post(url: string, data: any) {
-    console.log("Booking submitted:", data);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          status: 200,
-          data: {
-            message: "Booking successful",
-            bookingId: Math.floor(Math.random() * 1000),
-          },
-        });
-      }, 1000);
-    });
-  },
-};
+import { 
+  TimeSlotSkeleton, 
+  CalendarSkeleton, 
+  TimeInfoCardSkeleton, 
+  BreadcrumbSkeleton 
+} from "./Skeleton";
 
 interface TimeSlot {
   id: number;
@@ -29,14 +19,55 @@ interface TimeSlot {
   duration: number;
 }
 
+interface Service {
+  name: string;
+  duration: string;
+  price: number;
+}
+
+interface LocationState {
+  barber: {
+    name: string;
+    availability: string;
+    image: string;
+  };
+  services: Service[];
+  total: number;
+}
+
 const ChooseTimePage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { barber, services, total } = (location.state as LocationState) || {};
+
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [selectedMethod, setSelectedMethod] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isBooking, setIsBooking] = useState(false);
-  const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      setIsInitialLoading(true);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setTimeSlots(generateTimeSlots());
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    if (selectedDate && !isInitialLoading) {
+      setTimeSlots(generateTimeSlots());
+    }
+  }, [selectedDate]);
 
   const handleCardClick = (slot: TimeSlot) => {
     setSelectedCard(slot.id);
@@ -48,10 +79,9 @@ const ChooseTimePage = () => {
     const startTime = new Date();
     startTime.setHours(9, 0, 0);
     const endTime = new Date();
-    endTime.setHours(19, 0, 0);
+    endTime.setHours(18, 0, 0);
     let id = 1;
 
-    // Add some randomness to availability
     const unavailableSlots = new Set([3, 7, 12, 15]);
 
     while (startTime < endTime) {
@@ -75,280 +105,283 @@ const ChooseTimePage = () => {
     return slots;
   };
 
-  const timeSlots = generateTimeSlots();
-
-  const combineDateAndTime = (date: Date, time: string): string => {
-    const [timePart, modifier] = time.split(" ");
-    let [hours, minutes] = timePart.split(":").map(Number);
-
-    if (modifier === "PM" && hours < 24) hours += 24;
-    if (modifier === "AM" && hours === 24) hours = 0;
-
-    date.setHours(hours, minutes, 0, 0);
-    return date.toISOString();
-  };
-
   const submitBooking = async () => {
-    if (selectedDate && selectedSlot) {
+    if (selectedDate && selectedSlot && selectedMethod) {
+      setIsBooking(true);
       try {
-        setIsBooking(true);
-        const combinedDateTime = combineDateAndTime(
-          selectedDate,
-          selectedSlot.time
-        );
-        await mockBookingApi.post("/api/bookings", {
-          datetime: combinedDateTime,
-          duration: selectedSlot.duration,
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        navigate('/confirmation', {
+          state: {
+            barber,
+            services,
+            total,
+            date: selectedDate,
+            time: selectedSlot.time,
+            paymentMethod: selectedMethod
+          }
         });
-        setBookingSuccess(true);
-        console.log("Booking successfully submitted");
       } catch (error) {
-        console.error("Failed to submit booking", error);
-        setBookingSuccess(false);
+        console.error("Booking failed:", error);
       } finally {
         setIsBooking(false);
+        setShowPopup(false);
       }
-    } else {
-      console.error("No date or time slot selected");
     }
   };
 
-  return (
-    <div className="flex">
-      <NavBar />
-      <div className="flex-grow">
-        {/* Desktop Layout */}
-        <div className="hidden lg:block min-h-screen flex justify-start items-center pt-20 pl-20">
-          <div className="flex flex-row gap-8 p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl">
-              {timeSlots.map((slot) => (
-                <button
-                  key={slot.id}
-                  onClick={() => slot.available && handleCardClick(slot)}
-                  disabled={!slot.available}
-                  className={`text-left rounded-lg shadow-md p-4 hover:shadow-lg transition-all
-                    ${selectedCard === slot.id ? "ring-2 ring-blue-500" : ""}
-                    ${
-                      !slot.available
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "bg-gray-100"
-                    }`}
-                >
-                  <h3 className="font-semibold mb-2">{slot.time}</h3>
-                  <p className="text-sm text-gray-600">
-                    {slot.available ? `${slot.duration} min` : "Unavailable"}
-                  </p>
-                </button>
-              ))}
+  const renderTimeSlot = (slot: TimeSlot) => {
+    const isSelected = selectedCard === slot.id;
+    const isUnavailable = !slot.available;
+
+    return (
+      <button
+        key={slot.id}
+        onClick={() => slot.available && handleCardClick(slot)}
+        disabled={isUnavailable}
+        className={`
+          text-center rounded-2xl p-4 transition-all duration-200 ease-in-out
+          ${isUnavailable 
+            ? 'bg-gray-200 cursor-not-allowed' 
+            : isSelected
+              ? 'bg-black shadow-lg transform scale-[1.02]'
+              : 'bg-white hover:shadow-md hover:scale-[1.01]'
+          }
+          relative
+        `}
+      >
+        <h3 className={`
+          text-base font-medium transition-colors
+          ${isSelected 
+            ? 'text-white' 
+            : isUnavailable
+              ? 'text-gray-400'
+              : 'text-gray-900'
+          }
+        `}>
+          {slot.time.split(' ')[0]}
+        </h3>
+        <p className={`
+          text-sm transition-colors
+          ${isSelected
+            ? 'text-white'
+            : isUnavailable
+              ? 'text-gray-400'
+              : 'text-gray-500'
+          }
+        `}>
+          {slot.available ? '30 min' : 'Unavailable'}
+        </p>
+      </button>
+    );
+  };
+
+  const renderInfoCard = () => (
+    <div className="p-6">
+      <h2 className="text-xl font-bold mb-1">Your order</h2>
+      <p className="text-sm text-gray-400 mb-6">Bad Guy Barbers</p>
+      
+      <div className="flex items-center gap-3 mb-6">
+        <img
+          src={barber?.image}
+          alt={barber?.name}
+          className="w-8 h-8 rounded-sm object-cover"
+        />
+        <span className="text-gray-900">{barber?.name}</span>
+      </div>
+
+      <div className="space-y-4">
+        {services?.map((service, index) => (
+          <div key={index} className="flex justify-between items-start">
+            <div>
+              <p className="text-gray-900">
+                {index === 0 ? service.name : `+ ${service.name}`}
+              </p>
+              <p className="text-sm text-gray-500">{service.duration}</p>
             </div>
-            {/* This div above is marked  */}
-            <div className=" rounded-lg p-4 pl-20">
-              <Datepicker
-                inline
-                onChange={(date) => setSelectedDate(date as Date)}
-              />
-            </div>
+            <p className="text-gray-900">${service.price}</p>
           </div>
-          <div className="info-card bg-white rounded-lg shadow p-4 right-0 ml-auto mr-20 absolute top-28">
-            <h2 className="text-xl font-bold mb-4 font-jacques">
-              Bad Guy Barbers
-            </h2>
-            <div className="info-content">
-              {selectedDate && (
-                <p>
-                  <strong>Selected Date:</strong>{" "}
+        ))}
+
+        {selectedDate && selectedSlot && (
+          <div className="py-4 border-y border-gray-100">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-gray-900">Appointment</p>
+                <p className="text-sm text-gray-500">
                   {selectedDate.toLocaleDateString("en-US", {
                     weekday: "long",
-                    year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
+                  {" at "}
+                  {selectedSlot.time}
                 </p>
-              )}
-              {selectedSlot ? (
-                <div>
-                  <p>
-                    <strong>Selected Time:</strong> {selectedSlot.time}
-                  </p>
-                  <p>
-                    <strong>Duration:</strong> {selectedSlot.duration} minutes
-                  </p>
-                </div>
-              ) : (
-                <p className="text-gray-500">No time slot selected</p>
-              )}
-
-              <div className="flex flex-col space-y-2 p-4 max-w-xs">
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => setSelectedMethod("card")}
-                    className={`
-            flex items-center justify-center 
-            w-12 h-8 
-            border-2 rounded-lg 
-            transition-all duration-200 
-            ${
-              selectedMethod === "card"
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-300 hover:border-gray-500"
-            }
-          `}
-                  >
-                    <CreditCard
-                      className={`
-              w-4 h-4 
-              ${selectedMethod === "card" ? "text-blue-600" : "text-gray-400"}
-            `}
-                    />
-                  </button>
-                  <p className="text-sm text-gray-700">Card</p>
-                </div>
-
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => setSelectedMethod("cash")}
-                    className={`
-            flex items-center justify-center 
-            w-12 h-8 
-            border-2 rounded-lg 
-            transition-all duration-200 
-            ${
-              selectedMethod === "cash"
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-300 hover:border-gray-500"
-            }
-          `}
-                  >
-                    <DollarSign
-                      className={`
-              w-4 h-4 
-              ${selectedMethod === "cash" ? "text-blue-600" : "text-gray-400"}
-            `}
-                    />
-                  </button>
-                  <p className="text-sm text-gray-700">Cash</p>
-                </div>
               </div>
             </div>
-            <button
-              className={`mt-4 text-white rounded-lg py-2 px-6 ${
-                selectedDate && selectedSlot
-                  ? "bg-black hover:bg-black"
-                  : "bg-gray-400 cursor-not-allowed"
-              }`}
-              onClick={submitBooking}
-              disabled={!selectedDate || !selectedSlot || isBooking}
-            >
-              {isBooking ? "Booking..." : "Confirm Booking"}
-            </button>
-            {bookingSuccess && (
-              <p className="text-green-500 mt-2">Booking successful!</p>
-            )}
           </div>
-          {/* </div> */}
+        )}
+
+        <div className="pt-4 border-t border-gray-200">
+          <div className="flex justify-between items-center">
+            <span className="font-medium">Total</span>
+            <span className="font-medium">${total}</span>
+          </div>
         </div>
 
-        {/* Mobile Layout */}
-        <div className="lg:hidden min-h-screen flex flex-col items-center p-4 pt-20 pl-10 ">
-        
+        <div className="space-y-4">
+          <div className="flex gap-4">
+            <button
+              onClick={() => setSelectedMethod("card")}
+              className={`
+                flex items-center justify-center p-3 rounded-lg border-2
+                ${selectedMethod === "card" 
+                  ? "border-blue-500 bg-blue-50" 
+                  : "border-gray-200"
+                }
+              `}
+            >
+              <CreditCard 
+                className={selectedMethod === "card" ? "text-blue-500" : "text-gray-400"} 
+              />
+            </button>
+            <button
+              onClick={() => setSelectedMethod("cash")}
+              className={`
+                flex items-center justify-center p-3 rounded-lg border-2
+                ${selectedMethod === "cash" 
+                  ? "border-blue-500 bg-blue-50" 
+                  : "border-gray-200"
+                }
+              `}
+            >
+              <DollarSign 
+                className={selectedMethod === "cash" ? "text-blue-500" : "text-gray-400"} 
+              />
+            </button>
+          </div>
 
-          {/* Time Slots */}
-          <div className="lg:hidden min-h-screen flex flex-col items-center p-4 pt-20 ">
-           
-            <div className="w-full max-w-md mb-4 mx-auto flex justify-center">
-              <Datepicker inline />
-            </div>
+          <button
+            onClick={submitBooking}
+            disabled={!selectedDate || !selectedSlot || !selectedMethod || isBooking}
+            className={`
+              w-full py-3 rounded-lg text-white font-medium transition-colors
+              ${(!selectedDate || !selectedSlot || !selectedMethod) 
+                ? "bg-gray-200 cursor-not-allowed" 
+                : "bg-black hover:bg-gray-900"
+              }
+            `}
+          >
+            {isBooking ? "Booking..." : "Confirm booking"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
-            {/* Time Slots */}
-            <div className="grid grid-cols-3 gap-3 w-full max-w-md mx-auto justify-center items-center">
-              {/* Replace `timeSlots` with actual slot data */}
-              {timeSlots.map((slot) => (
-                <button
-                  key={slot.id}
-                  className={`text-center rounded-lg shadow-md p-2 hover:shadow-lg transition-all
-              ${
-                !slot.available
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-gray-100"
-              }`}
-                >
-                  <h3 className="font-semibold text-sm">{slot.time}</h3>
-                </button>
-              ))}
-            </div>
+  return (
+    <AnimatedPage>
+      <div className="min-h-screen bg-gray-50">
+        <NavBar />
+        <div className="pt-32 px-8">
+          {isInitialLoading ? <BreadcrumbSkeleton /> : <Breadcrumb />}
+          
+          {/* Desktop Layout */}
+          <div className="hidden lg:flex h-[calc(100vh-200px)] relative">
+            <div className="flex-1 flex gap-8 pr-[400px]">
+              {/* Time slots grid */}
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold mb-6">Choose a time</h2>
+                {isInitialLoading ? (
+                  <div className="grid grid-cols-3 gap-4">
+                    {[...Array(12)].map((_, index) => (
+                      <TimeSlotSkeleton key={index} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-4">
+                    {timeSlots.map((slot) => renderTimeSlot(slot))}
+                  </div>
+                )}
+              </div>
 
-            <div className="pt-4 border-t border-gray-200">
-              <div className="flex justify-between items-center">
-                <p></p>
-                <span className="font-medium">$</span>
+              {/* Calendar section */}
+              <div className="w-[400px]">
+                {isInitialLoading ? (
+                  <CalendarSkeleton />
+                ) : (
+                  <Datepicker
+                    inline
+                    onChange={(date) => setSelectedDate(date as Date)}
+                  />
+                )}
               </div>
             </div>
 
-            {/* "Book Time" Button */}
-            <button
-              className="w-full bg-black text-white py-3 rounded-lg mt-4"
-              onClick={() => setShowPopup(true)} // Show pop-up
-            >
-              Book Time
-            </button>
+            {/* Info card - fixed width sidebar */}
+            <div className="fixed top-32 right-8 w-[380px] bg-white rounded-xl shadow-sm h-[calc(100vh-200px)] overflow-y-auto">
+              {isInitialLoading ? (
+                <TimeInfoCardSkeleton />
+              ) : (
+                renderInfoCard()
+              )}
+            </div>
+          </div>
 
+          {/* Mobile Layout */}
+          <div className="lg:hidden min-h-screen flex flex-col items-center p-4">
+            {isInitialLoading ? (
+              <>
+                <CalendarSkeleton />
+                <div className="grid grid-cols-3 gap-3 w-full max-w-md mt-6">
+                  {[...Array(9)].map((_, index) => (
+                    <TimeSlotSkeleton key={index} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="w-full max-w-md mb-4">
+                  <Datepicker
+                    inline
+                    onChange={(date) => setSelectedDate(date as Date)}
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 w-full max-w-md">
+                  {timeSlots.map((slot) => renderTimeSlot(slot))}
+                </div>
+
+                <button
+                  onClick={() => setShowPopup(true)}
+                  disabled={!selectedDate || !selectedSlot}
+                  className={`
+                    w-full max-w-md bg-black text-white py-3 rounded-lg mt-6
+                    ${(!selectedDate || !selectedSlot) ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                >
+                  Continue
+                </button>
+              </>
+            )}
+
+            {/* Mobile Popup */}
             {showPopup && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-black w-11/12 max-w-sm p-6 rounded-lg relative h-3/4 overflow-y-auto">
-                  {/* Close Button */}
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div className="bg-white w-full max-w-sm rounded-xl p-6 relative">
                   <button
-                    className="absolute top-2 right-2 text-gray-600 hover:text-black"
-                    onClick={() => setShowPopup(false)} // Close pop-up
-                  >
-                    ✖
-                  </button>
-                  <h2 className="text-xl font-semibold mb-4 text-white">
-                    Your Order
-                  </h2>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4">
-                      <img
-                        src={tagimg}
-                        alt="Person Icon"
-                        className="w-8 h-8 rounded-full"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <p className="text-white">Something</p>
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <p className="text-white">Order Here</p>
-                    <p className="text-white">Date and Time</p>
-                  </div>
-                  <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-4">
-                    <CreditCard
-                      className={`
-      w-6 h-6
-      ${selectedMethod === "card" ? "text-blue-600" : "text-gray-400"}
-    `}
-                    />
-                    <DollarSign
-                      className={`
-      w-6 h-6
-      ${selectedMethod === "cash" ? "text-blue-600" : "text-gray-400"}
-    `}
-                    />
-                  </div>
-                  <button
-                    className="absolute bottom-0 left-0 w-full bg-white text-black py-2"
+                    className="absolute top-4 right-4 text-gray-500"
                     onClick={() => setShowPopup(false)}
                   >
-                    Confirm
+                    ✕
                   </button>
+                  {renderInfoCard()}
                 </div>
               </div>
             )}
           </div>
         </div>
       </div>
-      //{" "}
-    </div>
+    </AnimatedPage>
   );
 };
 
