@@ -12,8 +12,8 @@ const Breadcrumb: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Check if we have the required data for each step
   const hasBarber = Boolean(location.state?.barber);
+  const hasServices = Boolean(location.state?.services?.length);
 
   const getBreadcrumbs = (): BreadcrumbItem[] => {
     const currentPath = location.pathname;
@@ -29,13 +29,13 @@ const Breadcrumb: React.FC = () => {
         label: 'Service',
         path: '/barberservices',
         isActive: currentPath === '/barberservices',
-        isClickable: hasBarber || currentPath === '/barberservices'
+        isClickable: hasBarber
       },
       {
         label: 'Time',
         path: '/time',
         isActive: currentPath === '/time',
-        isClickable: false
+        isClickable: hasBarber && hasServices
       },
       {
         label: 'Done',
@@ -47,31 +47,37 @@ const Breadcrumb: React.FC = () => {
   };
 
   const handleClick = (item: BreadcrumbItem) => {
-    // Only navigate if the item is clickable
-    if (item.isClickable) {
-      // Preserve the state when navigating
-      navigate(item.path, { 
-        state: location.state 
-      });
-    }
+    if (!item.isClickable) return;
+
+    const currentState = location.state || {};
+    navigate(item.path, { 
+      state: {
+        ...currentState,
+        previousPath: location.pathname
+      }
+    });
   };
 
   return (
-    <nav className="flex items-center gap-2 text-sm mb-8">
+    <nav className="breadcrumb-nav">
       {getBreadcrumbs().map((item, index) => (
         <React.Fragment key={item.label}>
           <span
             className={`
-              ${item.isClickable ? 'cursor-pointer hover:text-gray-600' : 'cursor-not-allowed'}
-              ${item.isActive ? 'text-gray-900' : 'text-gray-400'}
-              transition-colors duration-200
+              breadcrumb-item
+              ${item.isClickable ? 'breadcrumb-item-clickable' : 'breadcrumb-item-disabled'}
+              ${item.isActive ? 'breadcrumb-item-active' : ''}
             `}
             onClick={() => handleClick(item)}
+            onKeyPress={(e) => e.key === 'Enter' && handleClick(item)}
+            role={item.isClickable ? 'button' : 'text'}
+            tabIndex={item.isClickable ? 0 : -1}
+            title={!item.isClickable ? 'Complete previous steps first' : ''}
           >
             {item.label}
           </span>
           {index < getBreadcrumbs().length - 1 && (
-            <span className="text-gray-400">›</span>
+            <span className="text-gray-400" aria-hidden="true">›</span>
           )}
         </React.Fragment>
       ))}
