@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NavBar from "./NavBar";
-import { Datepicker } from "flowbite-react";
+import { Breadcrumb, Datepicker } from "flowbite-react";
 import { CreditCard, DollarSign } from "lucide-react";
 import tagimg from "../assets/man silhouette.jpg";
+import { BASE_URL } from "../constant";
+import { time } from "framer-motion/client";
 // Mock API for bookings
 const mockBookingApi = {
   async post(url: string, data: any) {
@@ -29,8 +31,10 @@ interface TimeSlot {
   duration: number;
 }
 
+
 const ChooseTimePage = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
+  // const [cards, setCards] = useState<CardData[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [selectedMethod, setSelectedMethod] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -42,6 +46,18 @@ const ChooseTimePage = () => {
     setSelectedCard(slot.id);
     setSelectedSlot(slot);
   };
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await axios.get(BASE_URL);
+  //     setCards(response.data);
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+
+
 
   const generateTimeSlots = (): TimeSlot[] => {
     const slots: TimeSlot[] = [];
@@ -112,8 +128,10 @@ const ChooseTimePage = () => {
       console.error("No date or time slot selected");
     }
   };
+ 
 
   return (
+    
     <div className="flex">
       <NavBar />
       <div className="flex-grow">
