@@ -1,4 +1,5 @@
 
+import axios from 'axios';
 import { BASE_URL } from '../constant';
 
 // Interfaces
@@ -29,28 +30,15 @@ export interface AvailabilityResponse {
   availableSlots: TimeSlot[];
 }
 
-let userData = {};
+const api = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
 
-// const createBooking = async(createdBook) => {
-    
-//     const result = await fetch(BASE_URL, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(createdBook)
-//     })
-//     if(!result.ok)
-//     {
-//         const message = `Yo! You have an error! Check your code ${result.status}`
-//         throw new Error(message);
-
-//     }
-//     let data = await result.json();
-//     console.log(data);
-// }
-
+  
 
 
 
