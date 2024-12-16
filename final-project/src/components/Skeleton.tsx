@@ -130,4 +130,70 @@ export const BreadcrumbSkeleton = () => (
   </div>
 );
 
+// Add these to your Skeleton.tsx file
+
+// Time Slot Skeleton
+export const TimeSlotSkeleton = () => (
+  <div className="text-left rounded-lg shadow-md p-4 bg-white h-[120px] relative">
+    <div className="space-y-2">
+      <Skeleton className="h-6 w-24" /> {/* Time */}
+      <Skeleton className="h-4 w-16" /> {/* Duration */}
+    </div>
+  </div>
+);
+
+// Calendar Skeleton
+export const CalendarSkeleton = () => (
+  <div className="bg-white rounded-lg p-4 shadow-md">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center mb-4">
+        <Skeleton className="h-6 w-32" /> {/* Month/Year */}
+        <div className="flex gap-2">
+          <Skeleton className="h-8 w-8 rounded-lg" /> {/* Prev button */}
+          <Skeleton className="h-8 w-8 rounded-lg" /> {/* Next button */}
+        </div>
+      </div>
+      <div className="grid grid-cols-7 gap-2">
+        {/* Week days */}
+        {Array(7).fill(0).map((_, i) => (
+          <Skeleton key={`day-${i}`} className="h-6 w-8" />
+        ))}
+        {/* Calendar days */}
+        {Array(35).fill(0).map((_, i) => (
+          <Skeleton key={`date-${i}`} className="h-10 w-10 rounded-lg" />
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// Info Card Skeleton
+export const TimeInfoCardSkeleton = () => (
+  <div className="p-6 space-y-6">
+    <div>
+      <Skeleton className="h-8 w-32 mb-2" /> {/* Title */}
+      <Skeleton className="h-4 w-48 mb-6" /> {/* Subtitle */}
+    </div>
+    
+    <div className="space-y-4">
+      <div className="flex items-start gap-4">
+        <Skeleton className="w-10 h-10 rounded-full" /> {/* Profile pic */}
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-32" /> {/* Selected time */}
+          <Skeleton className="h-4 w-24" /> {/* Duration */}
+        </div>
+      </div>
+      <Skeleton className="h-4 w-full" /> {/* Date */}
+    </div>
+
+    <div className="space-y-4">
+      <div className="flex gap-4">
+        <Skeleton className="h-12 w-12 rounded-lg" /> {/* Payment method 1 */}
+        <Skeleton className="h-12 w-12 rounded-lg" /> {/* Payment method 2 */}
+      </div>
+      <Skeleton className="h-12 w-full rounded-lg" /> {/* Button */}
+    </div>
+  </div>
+);
+
 export default Skeleton;
