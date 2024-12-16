@@ -77,7 +77,7 @@ const ChooseTimePage = () => {
     if (selectedDate && !isInitialLoading) {
       setTimeSlots(generateTimeSlots());
     }
-  }, [selectedDate]);
+  }, [selectedDate, barber]); 
 
   const handleCardClick = (slot: TimeSlot) => {
     setSelectedCard(slot.id);
@@ -89,10 +89,26 @@ const ChooseTimePage = () => {
     const startTime = new Date();
     startTime.setHours(9, 0, 0);
     const endTime = new Date();
-    endTime.setHours(17, 30, 0); 
+    endTime.setHours(17, 30, 0);
     let id = 1;
 
-    const unavailableSlots = new Set([3, 7, 12, 15]);
+    const generateSeed = (str: string) => {
+      let seed = 0;
+      for (let i = 0; i < str.length; i++) {
+        seed += str.charCodeAt(i);
+      }
+      return seed;
+    };
+
+    const seed = generateSeed(barber?.name || '');
+    
+    const unavailableSlots = new Set();
+    const numUnavailableSlots = 5;
+    
+    for (let i = 0; i < numUnavailableSlots; i++) {
+      const unavailableId = ((seed * (i + 1)) % 17) + 1;
+      unavailableSlots.add(unavailableId);
+    }
 
     while (startTime < endTime) {
       const timeString = startTime.toLocaleTimeString("en-US", {
@@ -100,6 +116,14 @@ const ChooseTimePage = () => {
         minute: "2-digit",
         hour12: true,
       });
+
+      const hour = startTime.getHours();
+      const isPopularTime = hour >= 11 && hour <= 14;
+      const isPeakDay = selectedDate?.getDay() === 5 || selectedDate?.getDay() === 6;
+
+      if (isPopularTime && isPeakDay && Math.sin(seed * id) > 0.3) {
+        unavailableSlots.add(id);
+      }
 
       slots.push({
         id: id,
