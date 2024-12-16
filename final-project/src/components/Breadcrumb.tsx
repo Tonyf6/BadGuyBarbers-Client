@@ -1,6 +1,10 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+interface BreadcrumbProps {
+  isDone?: boolean;
+}
+
 interface BreadcrumbItem {
   label: string;
   path: string;
@@ -8,7 +12,7 @@ interface BreadcrumbItem {
   isClickable: boolean;
 }
 
-const Breadcrumb: React.FC = () => {
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ isDone = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -34,20 +38,20 @@ const Breadcrumb: React.FC = () => {
       {
         label: 'Time',
         path: '/time',
-        isActive: currentPath === '/time',
+        isActive: !isDone && currentPath === '/time',
         isClickable: hasBarber && hasServices
       },
       {
         label: 'Done',
-        path: '/done',
-        isActive: currentPath === '/done',
+        path: '/time', // Keep on time page, just show Done state
+        isActive: isDone && currentPath === '/time',
         isClickable: false
       }
     ];
   };
 
   const handleClick = (item: BreadcrumbItem) => {
-    if (!item.isClickable) return;
+    if (!item.isClickable || isDone) return; // Prevent navigation when in Done state
 
     const currentState = location.state || {};
     navigate(item.path, { 
@@ -65,13 +69,14 @@ const Breadcrumb: React.FC = () => {
           <span
             className={`
               breadcrumb-item
-              ${item.isClickable ? 'breadcrumb-item-clickable' : 'breadcrumb-item-disabled'}
+              ${item.isClickable && !isDone ? 'breadcrumb-item-clickable' : 'breadcrumb-item-disabled'}
               ${item.isActive ? 'breadcrumb-item-active' : ''}
+              ${isDone && item.label === 'Done' ? 'breadcrumb-item-active' : ''}
             `}
             onClick={() => handleClick(item)}
             onKeyPress={(e) => e.key === 'Enter' && handleClick(item)}
-            role={item.isClickable ? 'button' : 'text'}
-            tabIndex={item.isClickable ? 0 : -1}
+            role={item.isClickable && !isDone ? 'button' : 'text'}
+            tabIndex={item.isClickable && !isDone ? 0 : -1}
             title={!item.isClickable ? 'Complete previous steps first' : ''}
           >
             {item.label}

@@ -5,8 +5,18 @@ import AnimatedPage from './AnimatedPage';
 import { LoginFormSkeleton } from './Skeleton';
 import logo from '../assets/Bad Guy Barbers Logo.png';
 
+interface UserData {
+  username: string;
+  password: string;
+}
+
 const Login = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +28,46 @@ const Login = () => {
 
   const handleCreateAccount = () => {
     navigate('/createaccount');
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    setError(''); // Clear any previous errors
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.username || !formData.password) {
+      setError('Please enter both username and password');
+      return;
+    }
+
+    try {
+      // Get stored users from localStorage
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      
+      // Find matching user
+      const user = users.find((u: UserData) => 
+        u.username === formData.username && u.password === formData.password
+      );
+
+      if (user) {
+        // Store current user in localStorage
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        // Navigate to barber selection on successful login
+        navigate('/barberselection');
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      setError('An error occurred during login');
+    }
   };
 
   const logoAnimation = {
@@ -53,7 +103,11 @@ const Login = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <h2 className="login-title">Login</h2>
-          <form className="flex flex-col gap-6">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            {error && (
+              <div className="text-red-500 text-sm text-center">{error}</div>
+            )}
+            
             <motion.div 
               className="flex flex-col gap-2"
               initial={{ opacity: 0, x: -20 }}
@@ -63,8 +117,11 @@ const Login = () => {
               <label className="input-label">Username</label>
               <input
                 type="text"
+                name="username"
                 className="input-field"
                 placeholder="Enter username"
+                value={formData.username}
+                onChange={handleInputChange}
               />
             </motion.div>
 
@@ -77,8 +134,11 @@ const Login = () => {
               <label className="input-label">Password</label>
               <input
                 type="password"
+                name="password"
                 className="input-field"
                 placeholder="Enter password"
+                value={formData.password}
+                onChange={handleInputChange}
               />
             </motion.div>
 

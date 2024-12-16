@@ -47,23 +47,15 @@ const LandingPage = () => {
         />
 
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 bg-opacity-50 p-8 rounded-lg shadow-2xl backdrop-blur-sm">
-          <h1 className="font-jacques text-4xl font-bold text-black mb-4">
+          <h1 className="font-jacques text-4xl font-bold text-black mb-8">
             Welcome To Bad Guy Barbers
           </h1>
-          <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-6 py-4">
             <motion.button 
               variants={buttonVariants}
               whileHover="hover"
               whileTap="tap"
               onClick={handleLoginClick}
-              className="font-jacques bg-black hover:bg-gray-800 text-white font-bold py-2 px-8 rounded-full w-40"
-            >
-              Login
-            </motion.button>
-            <motion.button 
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
               className="font-jacques bg-black hover:bg-gray-800 text-white font-bold py-2 px-8 rounded-full w-40"
             >
               Book Now

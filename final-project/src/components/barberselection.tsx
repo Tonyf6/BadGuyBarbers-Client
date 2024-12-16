@@ -7,7 +7,6 @@ import Breadcrumb from './Breadcrumb';
 import Skeleton, { BarberCardSkeleton } from './Skeleton';
 import NavBar from "./NavBar";
 
-
 interface Barber {
   name: string;
   availability: string;
@@ -18,8 +17,45 @@ const BarberSelection: React.FC = () => {
   const [selectedBarber, setSelectedBarber] = useState<Barber | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
-  
   const navigate = useNavigate();
+
+  // Function to get next available time for a barber
+  const getNextAvailability = (offset: number = 0) => {
+    const now = new Date();
+    let nextDate = new Date(now);
+    
+    // Add offset days to distribute barbers' availability
+    nextDate.setDate(nextDate.getDate() + offset);
+    
+    // Keep adding days until we find a weekday
+    while (nextDate.getDay() === 0 || nextDate.getDay() === 6) {
+      nextDate.setDate(nextDate.getDate() + 1);
+    }
+
+    // If it's past business hours, move to next day
+    if (now.getHours() >= 17 || (now.getHours() === 17 && now.getMinutes() >= 30)) {
+      nextDate.setDate(nextDate.getDate() + 1);
+      // Reset time to 9 AM
+      nextDate.setHours(9, 0, 0, 0);
+    } else if (now.getHours() < 9) {
+      // If it's before business hours, set to 9 AM
+      nextDate.setHours(9, 0, 0, 0);
+    }
+
+    // Format the date and time
+    const formattedDate = nextDate.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+    
+    const formattedTime = nextDate.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+
+    return `Available ${formattedDate} at ${formattedTime}`;
+  };
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,17 +67,17 @@ const BarberSelection: React.FC = () => {
   const barbers = [
     {
       name: 'David J.',
-      availability: 'Available Tomorrow',
+      availability: getNextAvailability(0), // Next available today or tomorrow
       image: placeholder,
     },
     {
       name: 'Sam L.',
-      availability: 'Available Friday, Nov 1',
+      availability: getNextAvailability(1), // Next available after David
       image: placeholder,
     },
     {
       name: 'Tony F.',
-      availability: 'Available Tuesday, Nov 5',
+      availability: getNextAvailability(2), // Next available after Sam
       image: placeholder,
     },
   ];
@@ -63,7 +99,7 @@ const BarberSelection: React.FC = () => {
     <AnimatedPage>
       <div className={`min-h-screen bg-gray-50 ${isNavigating ? 'fade-out' : ''}`}>
         <NavBar />
-        <div className="pt-32 px-8"> {/* Added padding-top to account for NavBar height */}
+        <div className="pt-32 px-8">
           <Breadcrumb />
           <h1 className="title">Choose a professional</h1>
           <div className="content-wrapper">
