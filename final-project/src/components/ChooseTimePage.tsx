@@ -12,12 +12,14 @@ import {
   BreadcrumbSkeleton 
 } from "./Skeleton";
 
+
 interface TimeSlot {
   id: number;
   time: string;
   available: boolean;
   duration: number;
 }
+
 
 interface Service {
   name: string;
@@ -35,12 +37,14 @@ interface LocationState {
   total: number;
 }
 
+
 const ChooseTimePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { barber, services, total } = (location.state as LocationState) || {};
 
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
+  // const [cards, setCards] = useState<CardData[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [selectedMethod, setSelectedMethod] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -74,6 +78,18 @@ const ChooseTimePage = () => {
     setSelectedSlot(slot);
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await axios.get(BASE_URL);
+  //     setCards(response.data);
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+
+
+
   const generateTimeSlots = (): TimeSlot[] => {
     const slots: TimeSlot[] = [];
     const startTime = new Date();
@@ -94,7 +110,7 @@ const ChooseTimePage = () => {
       slots.push({
         id: id,
         time: timeString,
-        available: !unavailableSlots.has(id),
+        available: true,
         duration: 30,
       });
 
@@ -128,6 +144,8 @@ const ChooseTimePage = () => {
       }
     }
   };
+ 
+
 
   const renderTimeSlot = (slot: TimeSlot) => {
     const isSelected = selectedCard === slot.id;
@@ -197,9 +215,11 @@ const ChooseTimePage = () => {
                 {index === 0 ? service.name : `+ ${service.name}`}
               </p>
               <p className="text-sm text-gray-500">{service.duration}</p>
+
             </div>
             <p className="text-gray-900">${service.price}</p>
           </div>
+
         ))}
 
         {selectedDate && selectedSlot && (
@@ -208,6 +228,7 @@ const ChooseTimePage = () => {
               <div>
                 <p className="text-gray-900">Appointment</p>
                 <p className="text-sm text-gray-500">
+
                   {selectedDate.toLocaleDateString("en-US", {
                     weekday: "long",
                     month: "long",

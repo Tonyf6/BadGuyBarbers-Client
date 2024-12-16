@@ -1,5 +1,4 @@
-
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Login from './components/login';
 import CreateAccount from './components/createaccount';
@@ -13,20 +12,18 @@ import NavBar from './components/NavBar';
 import AboutUs from './components/AboutUs';
 import ChooseTimePage from './components/ChooseTimePage';
 
-
 const AnimatedRoutes = () => {
   const location = useLocation();
-  
   return (
-
     <AnimatePresence mode="wait">
       <div>
-      <NavBar/>
+        <NavBar/>
       </div>
       <Routes location={location} key={location.pathname}>
-      <Route path="/home" element={<LandingPage />} />
-      <Route path="/aboutus" element={<AboutUs />} />
-      <Route path="/time" element={<ChooseTimePage />} /> 
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/home" element={<LandingPage />} />
+        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/time" element={<ChooseTimePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/createaccount" element={<CreateAccount />} />
         <Route path="/barberselection" element={<BarberSelection />} />
