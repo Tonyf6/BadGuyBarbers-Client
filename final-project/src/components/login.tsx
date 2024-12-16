@@ -36,31 +36,26 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
-    setError(''); // Clear any previous errors
+    setError('');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
     if (!formData.username || !formData.password) {
       setError('Please enter both username and password');
       return;
     }
 
     try {
-      // Get stored users from localStorage
       const users = JSON.parse(localStorage.getItem('users') || '[]');
       
-      // Find matching user
       const user = users.find((u: UserData) => 
         u.username === formData.username && u.password === formData.password
       );
 
       if (user) {
-        // Store current user in localStorage
         localStorage.setItem('currentUser', JSON.stringify(user));
-        // Navigate to barber selection on successful login
         navigate('/barberselection');
       } else {
         setError('Invalid username or password');

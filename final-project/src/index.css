@@ -1,10 +1,8 @@
-
 @tailwind base;
 @tailwind components;
 
 @tailwind utilities;
 
-/* Base global styles */
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +13,6 @@ body {
   @apply min-h-screen bg-gray-100 font-sans;
 }
 
-/* Utility classes */
 .bg-body {
   @apply bg-gray-100;
 }
@@ -367,7 +364,6 @@ body {
   transition: transform 0.3s ease;
 }
 
-/* Add these skeleton animations to your existing CSS */
 
 @keyframes shimmer {
   0% {
@@ -396,7 +392,6 @@ body {
   overflow: hidden;
 }
 
-/* Add to your existing CSS */
 .breadcrumb-container {
   @apply flex items-center gap-2 text-sm mb-8;
 }

@@ -90,7 +90,7 @@ const BarberServices: React.FC = () => {
     }
   };
   const handleTimeSelection = () => {
-    // First preserve the current services and barber info
+    // preserve the current services and barber info
     const navigationState = {
       barber: selectedBarber,
       services: selectedServices,

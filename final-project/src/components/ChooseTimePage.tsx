@@ -89,7 +89,7 @@ const ChooseTimePage = () => {
     const startTime = new Date();
     startTime.setHours(9, 0, 0);
     const endTime = new Date();
-    endTime.setHours(17, 30, 0); // Set to 5:30 PM
+    endTime.setHours(17, 30, 0); 
     let id = 1;
 
     const unavailableSlots = new Set([3, 7, 12, 15]);
@@ -343,7 +343,7 @@ const ChooseTimePage = () => {
           </div>
         </div>
 
-        {/* Info card - fixed width sidebar */}
+      
         <div className="fixed top-32 right-8 w-[380px] bg-white rounded-xl shadow-sm h-[calc(100vh-200px)] overflow-y-auto">
           {isInitialLoading ? (
             <TimeInfoCardSkeleton />

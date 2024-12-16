@@ -8,7 +8,6 @@ const NavBar = () => {
 
 
   const handleLogout = () => {
-    // Add any logout logic here
     navigate('/home');
   };
 

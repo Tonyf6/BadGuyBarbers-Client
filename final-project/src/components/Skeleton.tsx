@@ -97,7 +97,6 @@ export const OrderSummarySkeleton = () => (
   </div>
 );
 
-// Create Account Skeleton (similar to Login but with one button)
 export const CreateAccountSkeleton = () => (
   <div className="login-box animate-pulse">
     <Skeleton className="h-8 w-48 mx-auto mb-6" /> {/* Title */}
@@ -130,7 +129,6 @@ export const BreadcrumbSkeleton = () => (
   </div>
 );
 
-// Add these to your Skeleton.tsx file
 
 // Time Slot Skeleton
 export const TimeSlotSkeleton = () => (

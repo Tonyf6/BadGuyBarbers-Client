@@ -42,21 +42,16 @@ const CreateAccount = () => {
 
   const saveUserData = (userData: UserData) => {
     try {
-      // Get existing users or initialize empty array
       const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
       
-      // Check if username already exists
       if (existingUsers.some((user: UserData) => user.username === userData.username)) {
         throw new Error('Username already exists');
       }
 
-      // Add new user
       existingUsers.push(userData);
       
-      // Save updated users array
       localStorage.setItem('users', JSON.stringify(existingUsers));
       
-      // Save current user
       localStorage.setItem('currentUser', JSON.stringify(userData));
       
       return true;
@@ -71,7 +66,6 @@ const CreateAccount = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
     if (!formData.username || !formData.password || !formData.confirmPassword) {
       setError('All fields are required');
       return;
@@ -87,7 +81,6 @@ const CreateAccount = () => {
       return;
     }
 
-    // Save user data
     const userData: UserData = {
       username: formData.username,
       password: formData.password

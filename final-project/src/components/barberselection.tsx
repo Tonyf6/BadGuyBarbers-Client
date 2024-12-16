@@ -19,30 +19,30 @@ const BarberSelection: React.FC = () => {
   const [isNavigating, setIsNavigating] = useState(false);
   const navigate = useNavigate();
 
-  // Function to get next available time for a barber
+  // function to get next available time for a barber
   const getNextAvailability = (offset: number = 0) => {
     const now = new Date();
     let nextDate = new Date(now);
     
-    // Add offset days to distribute barbers' availability
+    // add offset days to distribute barbers' availability
     nextDate.setDate(nextDate.getDate() + offset);
     
-    // Keep adding days until we find a weekday
+    // keep adding days until we find a weekday
     while (nextDate.getDay() === 0 || nextDate.getDay() === 6) {
       nextDate.setDate(nextDate.getDate() + 1);
     }
 
-    // If it's past business hours, move to next day
+    // if it's past business hours, move to next day
     if (now.getHours() >= 17 || (now.getHours() === 17 && now.getMinutes() >= 30)) {
       nextDate.setDate(nextDate.getDate() + 1);
-      // Reset time to 9 AM
+      // reset time to 9 AM
       nextDate.setHours(9, 0, 0, 0);
     } else if (now.getHours() < 9) {
-      // If it's before business hours, set to 9 AM
+      // if it's before business hours, set to 9 AM
       nextDate.setHours(9, 0, 0, 0);
     }
 
-    // Format the date and time
+    // format the date and time
     const formattedDate = nextDate.toLocaleDateString('en-US', {
       weekday: 'short',
       month: 'short',
@@ -67,17 +67,17 @@ const BarberSelection: React.FC = () => {
   const barbers = [
     {
       name: 'David J.',
-      availability: getNextAvailability(0), // Next available today or tomorrow
+      availability: getNextAvailability(0), 
       image: placeholder,
     },
     {
       name: 'Sam L.',
-      availability: getNextAvailability(1), // Next available after David
+      availability: getNextAvailability(1), 
       image: placeholder,
     },
     {
       name: 'Tony F.',
-      availability: getNextAvailability(2), // Next available after Sam
+      availability: getNextAvailability(2), 
       image: placeholder,
     },
   ];
