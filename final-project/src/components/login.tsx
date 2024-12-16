@@ -39,6 +39,10 @@ const Login = () => {
     setError('');
   };
 
+  const handleLogoClick = () => {
+    navigate('/home');
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -75,8 +79,16 @@ const Login = () => {
     return (
       <AnimatedPage>
         <div className="login-container">
-          <motion.div className="logo-container" {...logoAnimation}>
-            <img src={logo} alt="Bad Guy Barbers" className="logo" />
+          <motion.div 
+            className="logo-container cursor-pointer" 
+            onClick={handleLogoClick}
+            {...logoAnimation}
+          >
+            <img 
+              src={logo} 
+              alt="Bad Guy Barbers" 
+              className="logo hover:opacity-80 transition-all duration-200" 
+            />
           </motion.div>
           <LoginFormSkeleton />
         </div>
@@ -87,8 +99,16 @@ const Login = () => {
   return (
     <AnimatedPage>
       <div className="login-container">
-        <motion.div className="logo-container" {...logoAnimation}>
-          <img src={logo} alt="Bad Guy Barbers" className="logo" />
+        <motion.div 
+          className="logo-container cursor-pointer" 
+          onClick={handleLogoClick}
+          {...logoAnimation}
+        >
+          <img 
+            src={logo} 
+            alt="Bad Guy Barbers" 
+            className="logo hover:opacity-80 transition-all duration-200" 
+          />
         </motion.div>
 
         <motion.div

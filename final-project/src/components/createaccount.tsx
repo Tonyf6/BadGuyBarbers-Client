@@ -31,6 +31,10 @@ const CreateAccount = () => {
     navigate('/login');
   };
 
+  const handleLogoClick = () => {
+    navigate('/home');
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -101,8 +105,16 @@ const CreateAccount = () => {
     return (
       <AnimatedPage>
         <div className="login-container">
-          <motion.div className="logo-container" {...logoAnimation}>
-            <img src={logo} alt="Bad Guy Barbers" className="logo" />
+          <motion.div 
+            className="logo-container cursor-pointer" 
+            onClick={handleLogoClick}
+            {...logoAnimation}
+          >
+            <img 
+              src={logo} 
+              alt="Bad Guy Barbers" 
+              className="logo hover:opacity-80 transition-all duration-200" 
+            />
           </motion.div>
           <LoginFormSkeleton />
         </div>
@@ -113,8 +125,16 @@ const CreateAccount = () => {
   return (
     <AnimatedPage>
       <div className="login-container">
-        <motion.div className="logo-container" {...logoAnimation}>
-          <img src={logo} alt="Bad Guy Barbers" className="logo" />
+        <motion.div 
+          className="logo-container cursor-pointer" 
+          onClick={handleLogoClick}
+          {...logoAnimation}
+        >
+          <img 
+            src={logo} 
+            alt="Bad Guy Barbers" 
+            className="logo hover:opacity-80 transition-all duration-200" 
+          />
         </motion.div>
 
         <motion.div

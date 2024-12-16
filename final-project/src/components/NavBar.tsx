@@ -5,9 +5,11 @@ const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
-
   const handleLogout = () => {
+    navigate('/home');
+  };
+
+  const handleLogoClick = () => {
     navigate('/home');
   };
 
@@ -19,13 +21,12 @@ const NavBar = () => {
 
   return (
     <nav className="absolute top-0 left-0 w-full flex justify-between items-start p-4">
-      
-        <img
-          src={Logo}
-          alt="Bad Guy Barbers Logo"
-          className="h-32"
-        />
-      
+      <img
+        src={Logo}
+        alt="Bad Guy Barbers Logo"
+        className="h-32 cursor-pointer hover:opacity-80 transition-all duration-200"
+        onClick={handleLogoClick}
+      />
 
       {shouldShowLogout && (
         <span
